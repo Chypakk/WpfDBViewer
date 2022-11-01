@@ -1,0 +1,41 @@
+﻿<Window x:Class="WpfDBViewer.CreateWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfDBViewer"
+        mc:Ignorable="d"
+        Title="Создание таблицы" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="0.2*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+
+            <!--<Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>-->
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.2*"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0">
+                <TextBlock Margin="5">Введите название табицы</TextBlock>
+                <TextBox Margin="5" Width="150" x:Name="tableName"></TextBox>
+            </StackPanel>
+
+            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5">Введите названия столбцов</TextBlock>
+                <RichTextBox x:Name="Columns" Margin="5" Width="200" Height="100"></RichTextBox>
+            </StackPanel>
+
+        </Grid>
+        <Button Grid.Row="1" Width="100" Height="25" Content="Сохранить" Click="CreateTable"></Button>
+    </Grid>
+
+</Window>
