@@ -11,7 +11,7 @@ namespace WpfDBViewer
     {
         public static string dbName;
         public static string dbPath;
-
+        public static string selectedTable;
         
     }
 }

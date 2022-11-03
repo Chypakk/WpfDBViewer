@@ -33,6 +33,7 @@ namespace WpfDBViewer
         private void CreateTableWindow(object sender, RoutedEventArgs e)
         {
             CreateWindow createWindow = new CreateWindow();
+            createWindow.Owner = this;
             createWindow.Show();
         }
 
@@ -98,6 +99,85 @@ namespace WpfDBViewer
                 }
             }
 
+        }
+
+        public void UpdateTable()
+        {
+            using (var conn = new SQLiteConnection($"DataSource={DbInfoClass.dbName};Version=3;"))
+            {
+                DbInfoClass.selectedTable = DbTree.SelectedItem.ToString();
+                DataTable dataTable = new DataTable();
+                conn.Open();
+                var command = new SQLiteCommand($"SELECT * FROM {DbInfoClass.selectedTable}", conn);
+                SQLiteDataAdapter adapter = new SQLiteDataAdapter(command);
+                adapter.Fill(dataTable);
+
+                Table.ItemsSource = dataTable.DefaultView;
+
+            }
+        }
+
+        private void List_Changed(object sender, RoutedEventArgs e)
+        {
+            using (var conn = new SQLiteConnection($"DataSource={DbInfoClass.dbName};Version=3;"))
+            {
+                DbInfoClass.selectedTable = DbTree.SelectedItem == null ? "none" : DbTree.SelectedItem.ToString();
+                if (DbInfoClass.selectedTable != "none")
+                {
+                    DataTable dataTable = new DataTable();
+                    conn.Open();
+                    var command = new SQLiteCommand($"SELECT * FROM {DbInfoClass.selectedTable}", conn);
+                    SQLiteDataAdapter adapter = new SQLiteDataAdapter(command);
+                    adapter.Fill(dataTable);
+
+                    Table.ItemsSource = dataTable.DefaultView;
+                }
+
+
+            }
+
+        }
+
+        public void AddRowWindow(object sender, RoutedEventArgs e)
+        {
+            if (DbInfoClass.selectedTable == "sqlite_sequence")
+            {
+                MessageBox.Show("Эту таблицу изменить нельзя");
+            }
+            else
+            {
+                InsertRowTable rowTable = new InsertRowTable();
+                rowTable.Owner = this;
+                rowTable.Show();
+            }
+
+        }
+
+        public void DeleteTable(object sender, RoutedEventArgs e)
+        {
+            if (DbInfoClass.selectedTable == "sqlite_sequence")
+            {
+                MessageBox.Show("Эту таблицу удалить нельзя");
+            }
+            else
+            {
+                using (var conn = new SQLiteConnection($"DataSource={DbInfoClass.dbName};Version=3;"))
+                {
+                    conn.Open();
+                    try
+                    {
+                        var command = new SQLiteCommand($"DROP TABLE {DbInfoClass.selectedTable}", conn);
+                        command.ExecuteNonQuery();
+                        this.UpdateUI();
+                        MessageBox.Show("Таблица удалена");
+                        Table.ItemsSource = null;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                }
+            }
         }
 
         class Item

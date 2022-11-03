@@ -44,14 +44,28 @@ namespace WpfDBViewer
                 {
                     conn.Open();
                     string columnsCom = "";
-                    foreach (var item in columns)
+                    for (int i = 0; i < columns.Count(); i++)
                     {
-                        columnsCom += $", {item} TEXT";
+                        if (i == columns.Count() - 1)
+                        {
+                            columnsCom += $"{columns[i]} TEXT";
+                        }
+                        else
+                        {
+                            columnsCom += $"{columns[i]} TEXT, ";
+                        }
                     }
-                    var command = new SQLiteCommand($"CREATE TABLE {tableName.Text} (id INTEGER PRIMARY KEY AUTOINCREMENT{columnsCom})", conn);
-                    command.ExecuteNonQuery();
-                    flag = true;
-                    conn.Close();
+                    try
+                    {
+                        var command = new SQLiteCommand($"CREATE TABLE {tableName.Text} (id INTEGER PRIMARY KEY AUTOINCREMENT, {columnsCom})", conn);
+                        command.ExecuteNonQuery();
+                        flag = true;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                    
                 }
             }
             else
@@ -69,7 +83,7 @@ namespace WpfDBViewer
                     DbInfoClass.dbPath = dialog.FileName;
                 }
             }
-            MainWindow mw = new MainWindow();
+            MainWindow mw = (MainWindow)this.Owner;
             mw.UpdateUI();
             if (flag)
             {

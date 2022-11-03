@@ -22,8 +22,8 @@
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.5*" />
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="0.8*" />
         </Grid.ColumnDefinitions>
 
         <Menu Grid.ColumnSpan="2" Height="20" VerticalAlignment="Top">
@@ -34,12 +34,21 @@
             <MenuItem Header="Открыть бд" Click="OpenDb"/>
         </Menu>
 
-        <ListBox x:Name="DbTree" Grid.Row="1">
-            
+        <ListBox x:Name="DbTree" Grid.Row="1" SelectionChanged="List_Changed" >
+            <ListBox.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Добавить запись" Click="AddRowWindow"/>
+                    <MenuItem Header="Удалить таблицу" Click="DeleteTable" />
+                </ContextMenu>
+            </ListBox.ContextMenu>
         </ListBox>
 
+        <DataGrid x:Name="Table" Grid.Row="1" Grid.Column="1" />
+
+
+
         <!--<Button Click="ShowDbName" Height="25" Width="100" Content="Show"/>-->
-        
+
         <!--<ListBox Grid.Column="0" ItemsSource="{Binding Phones}"
                  SelectedItem="{Binding SelectedPhone}">
             <ListBox.ItemTemplate>
