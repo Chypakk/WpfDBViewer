@@ -43,7 +43,14 @@
             </ListBox.ContextMenu>
         </ListBox>
 
-        <DataGrid x:Name="Table" Grid.Row="1" Grid.Column="1" />
+        <DataGrid x:Name="Table" Grid.Row="1" Grid.Column="1">
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Добавить запись" Click="AddRowWindow"/>
+                    <MenuItem Header="Удалить запись" Click="DeleteRow" />
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+        </DataGrid>
 
 
 

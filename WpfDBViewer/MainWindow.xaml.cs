@@ -138,7 +138,7 @@ namespace WpfDBViewer
 
         }
 
-        public void AddRowWindow(object sender, RoutedEventArgs e)
+        private void AddRowWindow(object sender, RoutedEventArgs e)
         {
             if (DbInfoClass.selectedTable == "sqlite_sequence")
             {
@@ -153,7 +153,7 @@ namespace WpfDBViewer
 
         }
 
-        public void DeleteTable(object sender, RoutedEventArgs e)
+        private void DeleteTable(object sender, RoutedEventArgs e)
         {
             if (DbInfoClass.selectedTable == "sqlite_sequence")
             {
@@ -178,6 +178,30 @@ namespace WpfDBViewer
                     }
                 }
             }
+        }
+
+        private void DeleteRow(object sender, RoutedEventArgs e)
+        {
+            var selectedRow = Table.SelectedItem as DataRowView;
+            if (selectedRow != null)
+            {
+                using (var conn = new SQLiteConnection($"DataSource={DbInfoClass.dbName};Version=3;"))
+                {
+                    conn.Open();
+                    try
+                    {
+                        var command = new SQLiteCommand($"DELETE FROM {DbInfoClass.selectedTable} WHERE id = {selectedRow.Row.ItemArray[0]}", conn);
+                        command.ExecuteNonQuery();
+                        this.UpdateTable();
+                        MessageBox.Show("Запись удалена");
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                }
+            }
+
         }
 
         class Item
